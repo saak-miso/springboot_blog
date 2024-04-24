@@ -11,6 +11,8 @@ public class TestController {
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public void hello(Model model) {
 
+        System.out.println("???????????????");
+
         model.addAttribute("greeting", "Hello 타임리프.^^");
     }
 }
