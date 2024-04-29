@@ -3,7 +3,7 @@ package org.boot.blog.service;
 import java.util.List;
 
 import org.boot.blog.dao.MemberDAO;
-import org.boot.blog.vo.MemberVO;
+import org.boot.blog.model.MemberModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,17 +19,17 @@ public class MemberServiceImpl implements MemberService {
     private MemberDAO memberDAO;
 
     @Override
-    public List<MemberVO> listMembers() throws Exception {
+    public List<MemberModel> listMembers() throws Exception {
 
         System.out.println("2 @@@@@@@@@@");
 
-        List<MemberVO> membersList = null;
+        List<MemberModel> membersList = null;
         membersList = memberDAO.selectAllMemberList();
         return membersList;
     }
 
     @Override
-    public int addMember(MemberVO member) throws Exception {
+    public int addMember(MemberModel member) throws Exception {
         return memberDAO.insertMember(member);
     }
 
@@ -38,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
         return memberDAO.deleteMember(id);
     }
 
-    public MemberVO login(MemberVO memberVO) throws Exception {
-        return memberDAO.loginById(memberVO);
+    public MemberModel login(MemberModel memberModel) throws Exception {
+        return memberDAO.loginById(memberModel);
     }
 }

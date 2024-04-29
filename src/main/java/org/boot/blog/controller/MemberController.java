@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import org.boot.blog.vo.MemberVO;
+import org.boot.blog.model.MemberModel;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class MemberController {
 
         System.out.println("1 @@@@@@@@@@");
 
-        List<MemberVO> membersList = memberService.listMembers();
+        List<MemberModel> membersList = memberService.listMembers();
 
         System.out.println("membersList : " + membersList);
 
@@ -47,9 +47,8 @@ public class MemberController {
         // return mav;
     }
 
-    /*
     @PostMapping(value="/addMember.do")
-    public ModelAndView addMember(@ModelAttribute("member") MemberVO member, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView addMember(@ModelAttribute("member") MemberModel member, HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setCharacterEncoding("utf-8");
         int result = 0;
         result = memberService.addMember(member);
@@ -69,10 +68,10 @@ public class MemberController {
 
 
     @PostMapping(value = "/login.do")
-    public ModelAndView login(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView login(@ModelAttribute("member") MemberModel member, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 
-        MemberVO memberVO = new MemberVO();
+        MemberModel memberVO = new MemberModel();
 
         ModelAndView mav = new ModelAndView();
         memberVO = memberService.login(member);
@@ -133,6 +132,4 @@ public class MemberController {
         mav.setViewName(viewName);
         return mav;
     }
-
-     */
 }

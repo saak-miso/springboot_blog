@@ -1,4 +1,4 @@
-package org.boot.blog.vo;
+package org.boot.blog.model;
 
 import java.sql.Date;
 
@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 // @NoArgsConstructor
 @Getter
 @Setter
-@Component("memberVO")
-public class MemberVO {
+@Component("memberModel")
+public class MemberModel {
     private String id;
     private String pwd;
     private String name;
     private String email;
     private Date joinDate;
 
-    public MemberVO() {
+    public MemberModel() {
         System.out.println("MemberVO 생성자 호출");
     }
 
