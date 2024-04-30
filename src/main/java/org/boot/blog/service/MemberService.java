@@ -4,8 +4,6 @@ import org.boot.blog.model.MemberModel;
 
 import java.util.List;
 
-// persistence로 이동
-
 public interface MemberService {
 
     public List<MemberModel> listMembers() throws Exception;
