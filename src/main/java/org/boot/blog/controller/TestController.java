@@ -4,15 +4,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class TestController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public void hello(Model model) {
+    public ModelAndView hello() {
 
-        System.out.println("???????????????");
+        ModelAndView modelAndView = new ModelAndView();
 
-        model.addAttribute("greeting", "Hello 타임리프.^^");
+        modelAndView.setViewName("hello");
+        modelAndView.addObject("greeting", "Hello 타임리프.^^");
+
+        return modelAndView;
     }
 }

@@ -1,4 +1,4 @@
-package org.boot.blog.dao;
+package org.boot.blog.persistence;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.boot.blog.model.MemberModel;
@@ -10,8 +10,8 @@ import java.util.List;
 // Spring에서 Mapper 클래스
 
 @Mapper
-@Repository("memberDAO")
-public interface MemberDAO {
+@Repository("memberRepository")
+public interface MemberRepository {
     public List<MemberModel> selectAllMemberList() throws DataAccessException;
     public int insertMember(MemberModel memberVO) throws DataAccessException ;
     public int deleteMember(String id) throws DataAccessException;

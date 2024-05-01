@@ -12,7 +12,8 @@ import java.util.Date;
 @Component("boardModel")
 public class BoardModel {
 
-    private String uuid;
+    private int rowNum;
+    private String boardUuid;
     private String writeId;
     private String boardTitle;
     private String boardContent;

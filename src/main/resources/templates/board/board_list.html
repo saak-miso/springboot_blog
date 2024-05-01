@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>게시판 - 게시글 리스트</title>
+</head>
+<style type="text/css">
+    table, thead, tbody, tfoot { border:1px solid #000000;border-collapse:collapse; }
+    tfoot { text-align:center; }
+    th, td { border:1px solid #000000;padding:10px; }
+    tbody > tr > td { cursor:pointer;cursor:hand; }
+    tbody > tr > td:first-child { text-align:center; }
+    button { cursor:pointer;cursor:hand; }
+
+    div#pagingBar > a { text-decoration:none;color:inherit;margin-left:5px;margin-right:5px; }
+    div#pagingBar > a:hover { text-decoration:underline;color:#0000FF; }
+    div#pagingBar > a:active { text-decoration:underline;color:#0000FF; }
+    div#pagingBar > a.active { font-weight:bold; }
+</style>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // 페이징 네비게이션 바 생성
+        document.querySelector("#pagingBar").innerHTML = createPagingNavigation(
+              "changePagingNavigation"   // 호출함수명
+            , document.querySelector("#totalRow").value  // 전체_데이터_ROW
+            , 10   // 조회할 행의 개수 제한( OFFSET )
+            , document.querySelector("#pageNum").value   // 출력_페이지_번호
+        );
+
+        document.querySelectorAll(".listRow").forEach(function(element, index, array) {
+            element.addEventListener("click", function() {
+                window.location.href = "./boardInfo.do?uuid=" + element.dataset.uuid;
+            });
+        });
+
+        document.querySelector("#btnWrite").addEventListener("click", function() {
+            window.location.href = "./boardWrite.do";
+        });
+    });
+
+    function changePagingNavigation(pageNum) {
+        window.location.href = "./boardList.do?page=" + pageNum;
+    }
+
+    function createPagingNavigation(pagingFun, totalRow, limitRow, pageNum) {
+
+        let pagingBar = "";
+        let prevPage = 0;
+        let lastPage = 0;
+        let totalPage = parseInt((totalRow - 1) / limitRow);
+        let nowPage = 0;
+
+        if(pageNum === 0) {
+            nowPage = 0;
+        } else {
+            nowPage = pageNum;
+        }
+
+
+        let startRec = (nowPage) * limitRow;
+        let endRec = 0;
+
+        if((startRec + limitRow) > totalRow) {
+            endRec = totalRow;
+        } else {
+            endRec = startRec + limitRow;
+        }
+
+        prevPage = parseInt((nowPage - 1) / 5) * 5;
+
+        if ((prevPage + 4) > totalPage) {
+            lastPage = totalPage;
+        } else {
+            lastPage = prevPage + 4;
+        }
+
+        // 시작 페이지 이동
+        pagingBar += "<a href='javascript:;' onClick='" + pagingFun + "(1);'>&lt;&lt;</a>";
+
+        // 이전 단락 이동
+        if(prevPage == 0) {
+            pagingBar += "<a href='javascript:;'>&lt;</a>";
+        } else {
+            pagingBar += "<a href='javascript:;' onClick='" + pagingFun + "(" + prevPage + ");'>&lt;</a>";
+        }
+
+        for(let num = prevPage; num <= lastPage; num++) {
+
+            let thisPage = num + 1;
+
+            if(thisPage == nowPage) {
+                pagingBar += "<a href='javascript:;' class='active'>" + thisPage + "</a>";
+            } else {
+                pagingBar += "<a href='javascript:;' onClick='" + pagingFun + "(" + thisPage + ");'>" + thisPage + "</a>";
+            }
+        }
+
+        // 다음 단락 이동
+        if(lastPage != totalPage) {
+            let nextPage = prevPage + 6;
+            pagingBar += "<a href='javascript:;' onClick='" + pagingFun + "(" + nextPage + ");'>&gt;</a>";
+        } else {
+            pagingBar += "<a href='javascript:;'>&gt;</a>";
+        }
+
+        // 맨 끝 페이지 이동
+        pagingBar += "<a href='javascript:;' onClick='" + pagingFun + "(" + (totalPage + 1) + ");'>&gt;&gt;</a>";
+
+        return pagingBar;
+    }
+
+</script>
+<body>
+<input type="hidden" id="totalRow" th:value="${totalRow}">
+<input type="hidden" id="pageNum" th:value="${pageNum}">
+<h3>게시글 리스트</h3>
+<table>
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>날짜</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="board:${boardList}" th:attr="data-uuid=${board.boardUuid}" class="listRow">
+            <td th:text="${board.rowNum}"></td>
+            <td th:text="${board.boardTitle}"></td>
+            <td th:text="${board.writeId}"></td>
+            <td th:text="${#dates.format(board.registryDate, 'yyyy-MM-dd')}"></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5">
+                <div id="pagingBar"></div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<br/>
+<button id="btnWrite" type="button">새 글쓰기</button>
+</body>
+</html>
