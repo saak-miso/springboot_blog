@@ -1,6 +1,6 @@
 package org.boot.blog.service;
 
-import org.boot.blog.persistence.BoardRepository;
+import org.boot.blog.repository.BoardRepository;
 
 import org.boot.blog.model.BoardModel;
 

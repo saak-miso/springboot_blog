@@ -1,7 +1,7 @@
 package org.boot.blog.service;
 
 import org.boot.blog.model.PostingEntity;
-import org.boot.blog.persistence.PostingRepository;
+import org.boot.blog.repository.PostingRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

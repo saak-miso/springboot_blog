@@ -1,4 +1,4 @@
-package org.boot.blog.persistence;
+package org.boot.blog.repository;
 
 import org.boot.blog.model.PostingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

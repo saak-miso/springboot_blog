@@ -1,4 +1,4 @@
-package org.boot.blog.persistence;
+package org.boot.blog.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.boot.blog.model.MemberModel;

@@ -2,7 +2,7 @@ package org.boot.blog.service;
 
 import java.util.List;
 
-import org.boot.blog.persistence.MemberRepository;
+import org.boot.blog.repository.MemberRepository;
 import org.boot.blog.model.MemberModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
