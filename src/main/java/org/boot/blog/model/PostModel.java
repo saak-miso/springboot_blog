@@ -1,5 +1,8 @@
 package org.boot.blog.model;
 
+
+// 패키지 - Entity로 변경
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;

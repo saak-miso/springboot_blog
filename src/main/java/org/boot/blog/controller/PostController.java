@@ -3,8 +3,8 @@ package org.boot.blog.controller;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.boot.blog.model.BoardModel;
-import org.boot.blog.service.BoardService;
+import org.boot.blog.model.PostModel;
+import org.boot.blog.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,19 +19,19 @@ import java.util.UUID;
 @RequestMapping("/post")
 public class PostController {
 
-    @Resource(name="boardService")
-    private BoardService boardService;
+    @Resource(name="postService")
+    private PostService postService;
 
-    @GetMapping("/boardInfo.do")
-    public ModelAndView boardInfo(HttpServletRequest request) throws Exception {
+    @GetMapping("/postInfo.do")
+    public ModelAndView postInfo(HttpServletRequest request) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView();
 
         if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
 
-            BoardModel boardModel = new BoardModel();
-            boardModel.setBoardUuid(request.getParameter("uuid"));
-            BoardModel boardInfo = boardService.boardInfo(boardModel);
+            PostModel postModel = new PostModel();
+            postModel.setPostUuid(request.getParameter("uuid"));
+            PostModel postInfo = postService.postInfo(postModel);
 
             /** Gson - 조회한 데이터 확인을 위해 사용
              * Gson dataGson = new Gson();
@@ -39,24 +39,24 @@ public class PostController {
              * System.out.println(dataJson);
              */
 
-            modelAndView.setViewName("board/board_info");
-            modelAndView.addObject("writeId", boardInfo.getWriteId());
-            modelAndView.addObject("boardTitle", boardInfo.getBoardTitle());
-            modelAndView.addObject("boardContent", boardInfo.getBoardContent());
-            modelAndView.addObject("registryDate", boardInfo.getRegistryDate());
+            modelAndView.setViewName("post/post_info");
+            modelAndView.addObject("writeId", postInfo.getWriteId());
+            modelAndView.addObject("boardTitle", postInfo.getPostTitle());
+            modelAndView.addObject("boardContent", postInfo.getPostContent());
+            modelAndView.addObject("registryDate", postInfo.getRegistryDate());
         }
 
         return modelAndView;
     }
 
-    @GetMapping("/boardList.do")
+    @GetMapping("/postList.do")
     public ModelAndView boardList(HttpServletRequest request) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView();
 
-        BoardModel boardModel = new BoardModel();
+        PostModel postModel = new PostModel();
 
-        int totalRow = boardService.boardCount(boardModel); // 해당 테이블의 전체 갯수
+        int totalRow = postService.postCount(postModel); // 해당 테이블의 전체 갯수
         int pageNum = 0;    // 선택 페이지
         int offset = 0; // 결과에서 가져올 첫 번째 행의 OFFSET( 0부터 시작 )
         int limitRow = 10;  // 가져올 행의 수를 지정
@@ -75,47 +75,47 @@ public class PostController {
          * System.out.println(dataJson);
          */
 
-        modelAndView.setViewName("board/board_list");
-        modelAndView.addObject("boardList", boardService.boardList(boardModel, offset, limitRow));
+        modelAndView.setViewName("post/post_list");
+        modelAndView.addObject("boardList", postService.postList(postModel, offset, limitRow));
         modelAndView.addObject("totalRow", totalRow);
         modelAndView.addObject("pageNum", pageNum);
 
         return modelAndView;
     }
 
-    @RequestMapping(value = "/boardWrite.do")
+    @RequestMapping(value = "/postWrite.do")
     public ModelAndView boardWrite()  {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("board/board_write");
+        modelAndView.setViewName("post/post_write");
         return modelAndView;
     }
 
     @ResponseBody
-    @PostMapping("/insertBoard")
+    @PostMapping("/insertPost")
     public void insertBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        BoardModel boardModel = new BoardModel();
+        PostModel postModel = new PostModel();
 
         UUID uuid = UUID.randomUUID();
-        String boardUuid = uuid.toString();
-        boardModel.setBoardUuid(boardUuid);
+        String postUuid = uuid.toString();
+        postModel.setPostUuid(postUuid);
 
         if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
-            boardModel.setWriteId(request.getParameter("writeId"));
+            postModel.setWriteId(request.getParameter("writeId"));
         }
 
         if(request.getParameter("boardTitle") != null && request.getParameter("boardTitle").isBlank() == false) {
-            boardModel.setBoardTitle(request.getParameter("boardTitle"));
+            postModel.setPostTitle(request.getParameter("boardTitle"));
         }
 
         if(request.getParameter("boardContent") != null && request.getParameter("boardContent").isBlank() == false) {
-            boardModel.setBoardContent(request.getParameter("boardContent"));
+            postModel.setPostContent(request.getParameter("boardContent"));
         }
 
-        int resultNumber = boardService.insertBoard(boardModel);
+        int resultNumber = postService.insertPost(postModel);
 
         if(resultNumber > 0) {
-            response.sendRedirect("./boardList.do");
+            response.sendRedirect("./postList.do");
         } else {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=utf-8");
@@ -126,15 +126,15 @@ public class PostController {
     }
 
     @GetMapping(value = "/boardModify.do")
-    public ModelAndView boardModify(HttpServletRequest request) throws Exception {
+    public ModelAndView postModify(HttpServletRequest request) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView();
 
         if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
 
-            BoardModel boardModel = new BoardModel();
-            boardModel.setBoardUuid(request.getParameter("uuid"));
-            BoardModel boardInfo = boardService.boardInfo(boardModel);
+            PostModel postModel = new PostModel();
+            postModel.setPostUuid(request.getParameter("uuid"));
+            PostModel postInfo = postService.postInfo(postModel);
 
             /** Gson - 조회한 데이터 확인을 위해 사용
              * Gson dataGson = new Gson();
@@ -143,42 +143,42 @@ public class PostController {
              */
 
             modelAndView.setViewName("board/board_modify");
-            modelAndView.addObject("boardUuid", boardInfo.getBoardUuid());
-            modelAndView.addObject("writeId", boardInfo.getWriteId());
-            modelAndView.addObject("boardTitle", boardInfo.getBoardTitle());
-            modelAndView.addObject("boardContent", boardInfo.getBoardContent());
-            modelAndView.addObject("registryDate", boardInfo.getRegistryDate());
+            modelAndView.addObject("postUuid", postInfo.getPostUuid());
+            modelAndView.addObject("writeId", postInfo.getWriteId());
+            modelAndView.addObject("postTitle", postInfo.getPostTitle());
+            modelAndView.addObject("postContent", postInfo.getPostContent());
+            modelAndView.addObject("registryDate", postInfo.getRegistryDate());
         }
 
         return modelAndView;
     }
 
     @ResponseBody
-    @PostMapping(value = "/updateBoard")
-    public void updateBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @PostMapping(value = "/updatePost")
+    public void updatePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        BoardModel boardModel = new BoardModel();
+        PostModel postModel = new PostModel();
 
-        if(request.getParameter("boardUuid") != null && request.getParameter("boardUuid").isBlank() == false) {
-            boardModel.setBoardUuid(request.getParameter("boardUuid"));
+        if(request.getParameter("postUuid") != null && request.getParameter("postUuid").isBlank() == false) {
+            postModel.setPostUuid(request.getParameter("postUuid"));
         }
 
         if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
-            boardModel.setWriteId(request.getParameter("writeId"));
+            postModel.setWriteId(request.getParameter("writeId"));
         }
 
-        if(request.getParameter("boardTitle") != null && request.getParameter("boardTitle").isBlank() == false) {
-            boardModel.setBoardTitle(request.getParameter("boardTitle"));
+        if(request.getParameter("postitle") != null && request.getParameter("postTitle").isBlank() == false) {
+            postModel.setPostTitle(request.getParameter("postTitle"));
         }
 
-        if(request.getParameter("boardContent") != null && request.getParameter("boardContent").isBlank() == false) {
-            boardModel.setBoardContent(request.getParameter("boardContent"));
+        if(request.getParameter("postContent") != null && request.getParameter("postContent").isBlank() == false) {
+            postModel.setPostContent(request.getParameter("postContent"));
         }
 
-        int resultNumber = boardService.updateBoard(boardModel);
+        int resultNumber = postService.updatePost(postModel);
 
         if(resultNumber > 0) {
-            response.sendRedirect("./boardInfo.do?uuid=" + boardModel.getBoardUuid());
+            response.sendRedirect("./postInfo.do?uuid=" + postModel.getPostUuid());
         } else {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=utf-8");
@@ -191,16 +191,16 @@ public class PostController {
         }
     }
 
-    @GetMapping(value = "/deleteBoard")
-    public void deleteBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @GetMapping(value = "/deletePost")
+    public void deletePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
 
-            BoardModel boardModel = new BoardModel();
+            PostModel postModel = new PostModel();
 
-            boardModel.setBoardUuid(request.getParameter("uuid"));
+            postModel.setPostUuid(request.getParameter("uuid"));
 
-            int resultNumber = boardService.deleteBoard(boardModel);
+            int resultNumber = postService.deletePost(postModel);
 
             if(resultNumber > 0) {
                 response.setCharacterEncoding("UTF-8");
