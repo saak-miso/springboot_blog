@@ -3,7 +3,7 @@ package org.boot.blog.controller;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.boot.blog.model.PostModel;
+import org.boot.blog.dao.PostDAO;
 import org.boot.blog.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +29,9 @@ public class PostController {
 
         if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
 
-            PostModel postModel = new PostModel();
-            postModel.setPostUuid(request.getParameter("uuid"));
-            PostModel postInfo = postService.postInfo(postModel);
+            PostDAO postDao = new PostDAO();
+            postDao.setPostUuid(request.getParameter("uuid"));
+            PostDAO postInfo = postService.postInfo(postDao);
 
             /** Gson - 조회한 데이터 확인을 위해 사용
              * Gson dataGson = new Gson();
@@ -54,9 +54,9 @@ public class PostController {
 
         ModelAndView modelAndView = new ModelAndView();
 
-        PostModel postModel = new PostModel();
+        PostDAO postDao = new PostDAO();
 
-        int totalRow = postService.postCount(postModel); // 해당 테이블의 전체 갯수
+        int totalRow = postService.postCount(postDao); // 해당 테이블의 전체 갯수
         int pageNum = 0;    // 선택 페이지
         int offset = 0; // 결과에서 가져올 첫 번째 행의 OFFSET( 0부터 시작 )
         int limitRow = 10;  // 가져올 행의 수를 지정
@@ -76,7 +76,7 @@ public class PostController {
          */
 
         modelAndView.setViewName("post/post_list");
-        modelAndView.addObject("boardList", postService.postList(postModel, offset, limitRow));
+        modelAndView.addObject("boardList", postService.postList(postDao, offset, limitRow));
         modelAndView.addObject("totalRow", totalRow);
         modelAndView.addObject("pageNum", pageNum);
 
@@ -94,25 +94,25 @@ public class PostController {
     @PostMapping("/insertPost")
     public void insertBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        PostModel postModel = new PostModel();
+        PostDAO postDao = new PostDAO();
 
         UUID uuid = UUID.randomUUID();
         String postUuid = uuid.toString();
-        postModel.setPostUuid(postUuid);
+        postDao.setPostUuid(postUuid);
 
         if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
-            postModel.setWriteId(request.getParameter("writeId"));
+            postDao.setWriteId(request.getParameter("writeId"));
         }
 
         if(request.getParameter("boardTitle") != null && request.getParameter("boardTitle").isBlank() == false) {
-            postModel.setPostTitle(request.getParameter("boardTitle"));
+            postDao.setPostTitle(request.getParameter("boardTitle"));
         }
 
         if(request.getParameter("boardContent") != null && request.getParameter("boardContent").isBlank() == false) {
-            postModel.setPostContent(request.getParameter("boardContent"));
+            postDao.setPostContent(request.getParameter("boardContent"));
         }
 
-        int resultNumber = postService.insertPost(postModel);
+        int resultNumber = postService.insertPost(postDao);
 
         if(resultNumber > 0) {
             response.sendRedirect("./postList.do");
@@ -132,9 +132,9 @@ public class PostController {
 
         if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
 
-            PostModel postModel = new PostModel();
-            postModel.setPostUuid(request.getParameter("uuid"));
-            PostModel postInfo = postService.postInfo(postModel);
+            PostDAO postDao = new PostDAO();
+            postDao.setPostUuid(request.getParameter("uuid"));
+            PostDAO postInfo = postService.postInfo(postDao);
 
             /** Gson - 조회한 데이터 확인을 위해 사용
              * Gson dataGson = new Gson();
@@ -157,28 +157,28 @@ public class PostController {
     @PostMapping(value = "/updatePost")
     public void updatePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        PostModel postModel = new PostModel();
+        PostDAO postDao = new PostDAO();
 
         if(request.getParameter("postUuid") != null && request.getParameter("postUuid").isBlank() == false) {
-            postModel.setPostUuid(request.getParameter("postUuid"));
+            postDao.setPostUuid(request.getParameter("postUuid"));
         }
 
         if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
-            postModel.setWriteId(request.getParameter("writeId"));
+            postDao.setWriteId(request.getParameter("writeId"));
         }
 
         if(request.getParameter("postitle") != null && request.getParameter("postTitle").isBlank() == false) {
-            postModel.setPostTitle(request.getParameter("postTitle"));
+            postDao.setPostTitle(request.getParameter("postTitle"));
         }
 
         if(request.getParameter("postContent") != null && request.getParameter("postContent").isBlank() == false) {
-            postModel.setPostContent(request.getParameter("postContent"));
+            postDao.setPostContent(request.getParameter("postContent"));
         }
 
-        int resultNumber = postService.updatePost(postModel);
+        int resultNumber = postService.updatePost(postDao);
 
         if(resultNumber > 0) {
-            response.sendRedirect("./postInfo.do?uuid=" + postModel.getPostUuid());
+            response.sendRedirect("./postInfo.do?uuid=" + postDao.getPostUuid());
         } else {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=utf-8");
@@ -196,11 +196,11 @@ public class PostController {
 
         if(request.getParameter("uuid") != null && request.getParameter("uuid").isBlank() == false) {
 
-            PostModel postModel = new PostModel();
+            PostDAO postDao = new PostDAO();
 
-            postModel.setPostUuid(request.getParameter("uuid"));
+            postDao.setPostUuid(request.getParameter("uuid"));
 
-            int resultNumber = postService.deletePost(postModel);
+            int resultNumber = postService.deletePost(postDao);
 
             if(resultNumber > 0) {
                 response.setCharacterEncoding("UTF-8");

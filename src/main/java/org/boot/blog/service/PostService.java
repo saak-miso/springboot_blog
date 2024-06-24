@@ -1,20 +1,20 @@
 package org.boot.blog.service;
 
-import org.boot.blog.model.PostModel;
+import org.boot.blog.dao.PostDAO;
 
 import java.util.List;
 
 public interface PostService {
 
-    public PostModel postInfo(PostModel postModel) throws Exception;
+    public PostDAO postInfo(PostDAO postDao) throws Exception;
 
-    public int postCount(PostModel postModel) throws Exception;
+    public int postCount(PostDAO postDao) throws Exception;
 
-    public List<PostModel> postList(PostModel postModel, int offset, int limitRow) throws Exception;
+    public List<PostDAO> postList(PostDAO postDao, int offset, int limitRow) throws Exception;
 
-    int insertPost(PostModel postModel) throws Exception;
+    int insertPost(PostDAO postDao) throws Exception;
 
-    int updatePost(PostModel postModel) throws Exception;
+    int updatePost(PostDAO postDao) throws Exception;
 
-    int deletePost(PostModel postModel) throws Exception;
+    int deletePost(PostDAO postDao) throws Exception;
 }

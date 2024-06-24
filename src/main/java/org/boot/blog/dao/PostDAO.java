@@ -1,4 +1,4 @@
-package org.boot.blog.model;
+package org.boot.blog.dao;
 
 
 // 패키지 - Entity로 변경
@@ -12,8 +12,8 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Component("postModel")
-public class PostModel {
+@Component("postDAO")
+public class PostDAO {
 
     private int rowNum;
     private String postUuid;
@@ -22,7 +22,7 @@ public class PostModel {
     private String postContent;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date registryDate;
-    public PostModel() {
-        System.out.println("PostModel 생성자 호출");
+    public PostDAO() {
+        System.out.println("PostDAO 생성자 호출");
     }
 }

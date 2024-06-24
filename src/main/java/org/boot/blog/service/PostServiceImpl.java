@@ -1,6 +1,6 @@
 package org.boot.blog.service;
 
-import org.boot.blog.model.PostModel;
+import org.boot.blog.dao.PostDAO;
 import org.boot.blog.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,32 +19,32 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     @Override
-    public PostModel postInfo(PostModel postModel) throws Exception {
-        return postRepository.selectPostInfo(postModel);
+    public PostDAO postInfo(PostDAO postDao) throws Exception {
+        return postRepository.selectPostInfo(postDao);
     }
 
     @Override
-    public int postCount(PostModel postModel) throws Exception {
-        return postRepository.selectPostCount(postModel);
+    public int postCount(PostDAO postDao) throws Exception {
+        return postRepository.selectPostCount(postDao);
     }
 
     @Override
-    public List<PostModel> postList(PostModel postModel, int offset, int limitRow) throws Exception {
-        return postRepository.selectPostList(postModel, offset, limitRow);
+    public List<PostDAO> postList(PostDAO postDao, int offset, int limitRow) throws Exception {
+        return postRepository.selectPostList(postDao, offset, limitRow);
     }
 
     @Override
-    public int insertPost(PostModel postModel) throws Exception {
-        return postRepository.insertPost(postModel);
+    public int insertPost(PostDAO postDao) throws Exception {
+        return postRepository.insertPost(postDao);
     }
 
     @Override
-    public int updatePost(PostModel postModel) throws Exception {
-        return postRepository.updatePost(postModel);
+    public int updatePost(PostDAO postDao) throws Exception {
+        return postRepository.updatePost(postDao);
     }
 
     @Override
-    public int deletePost(PostModel postModel) throws Exception {
-        return postRepository.deletePost(postModel);
+    public int deletePost(PostDAO postDao) throws Exception {
+        return postRepository.deletePost(postDao);
     }
 }
