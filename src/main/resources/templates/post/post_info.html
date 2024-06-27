@@ -12,7 +12,7 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("btnList").addEventListener("click", function() {
-            window.location.href = "./postList.do";
+            window.location.href = "./postList";
         });
 
         document.getElementById("btnRemove").addEventListener("click", function() {
@@ -22,7 +22,7 @@
         });
 
         document.getElementById("btnModify").addEventListener("click", function() {
-            window.location.href = "./postModify.do?uuid=" + getParameter("uuid");
+            window.location.href = "./postModify?uuid=" + getParameter("uuid");
         });
     });
 
@@ -52,11 +52,11 @@
     </tr>
     <tr>
         <th>작성일</th>
-        <td th:text="${postContent}"></td>
+        <td th:text="${#dates.format(registryDate, 'yyyy-MM-dd')}"></td>
     </tr>
     <tr>
         <th>내용</th>
-        <td th:text="${registryDate}"></td>
+        <td th:text="${postContent}"></td>
     </tr>
     </tbody>
     <tfoot>

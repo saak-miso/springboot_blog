@@ -1,8 +1,8 @@
 package org.boot.blog.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.boot.blog.model.PostModel;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 

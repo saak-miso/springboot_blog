@@ -19,17 +19,17 @@ public class PostServiceImpl implements PostService {
     private PostDAO postDAO;
 
     @Override
-    public PostModel postInfo(PostModel postModel) throws Exception {
+    public PostModel postInfo(PostModel postModel) {
         return postDAO.selectPostInfo(postModel);
     }
 
     @Override
-    public int postCount(PostModel postModel) throws Exception {
+    public int postCount(PostModel postModel) {
         return postDAO.selectPostCount(postModel);
     }
 
     @Override
-    public List<PostModel> postList(PostModel postModel, int offset, int limitRow) throws Exception {
+    public List<PostModel> postList(PostModel postModel, int offset, int limitRow) {
         return postDAO.selectPostList(postModel, offset, limitRow);
     }
 

@@ -31,24 +31,24 @@
         LIMIT ${offset}, ${limitRow}
     </select>
 
-    <insert id="insertBoard" useGeneratedKeys="true" keyProperty="board_uuid">
-        INSERT INTO post_board(board_uuid, write_id, board_title, board_content)
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="post_uuid">
+        INSERT INTO post_board(post_uuid, write_id, post_title, post_content)
         VALUE(#{postUuid}, #{writeId}, #{postTitle}, #{postContent})
     </insert>
 
-    <update id="updateBoard">
+    <update id="updatePost">
         UPDATE post_board SET
-              board_title = #{postTitle}
-            , board_content = #{postContent}
+              post_title = #{postTitle}
+            , post_content = #{postContent}
         WHERE 1 = 1
-          AND board_uuid = #{postUuid}
+          AND post_uuid = #{postUuid}
           AND write_id = #{writeId}
     </update>
 
-    <delete id="deleteBoard">
+    <delete id="deletePost">
         DELETE FROM post_board
          WHERE 1 = 1
-           AND board_uuid = #{postUuid}
+           AND post_uuid = #{postUuid}
     </delete>
 
 </mapper>

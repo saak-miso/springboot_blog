@@ -30,17 +30,17 @@
 
         document.querySelectorAll(".listRow").forEach(function(element, index, array) {
             element.addEventListener("click", function() {
-                window.location.href = "./boardInfo.do?uuid=" + element.dataset.uuid;
+                window.location.href = "./postInfo?uuid=" + element.dataset.uuid;
             });
         });
 
         document.querySelector("#btnWrite").addEventListener("click", function() {
-            window.location.href = "./boardWrite.do";
+            window.location.href = "./postWrite";
         });
     });
 
     function changePagingNavigation(pageNum) {
-        window.location.href = "./boardList.do?page=" + pageNum;
+        window.location.href = "./postList?page=" + pageNum;
     }
 
     function createPagingNavigation(pagingFun, totalRow, limitRow, pageNum) {
@@ -127,7 +127,7 @@
     <tbody>
         <tr th:each="post:${postList}" th:attr="data-uuid=${post.postUuid}" class="listRow">
             <td th:text="${post.rowNum}"></td>
-            <td th:text="${post.boardTitle}"></td>
+            <td th:text="${post.postTitle}"></td>
             <td th:text="${post.writeId}"></td>
             <td th:text="${#dates.format(post.registryDate, 'yyyy-MM-dd')}"></td>
         </tr>

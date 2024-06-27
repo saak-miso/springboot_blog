@@ -1,10 +1,13 @@
 package org.boot.blog.controller;
 
+import com.google.gson.Gson;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.boot.blog.service.PostService;
 import org.boot.blog.model.PostModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,10 +22,12 @@ import java.util.UUID;
 @RequestMapping("/post")
 public class PostController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+
     @Resource(name="postService")
     private PostService postService;
 
-    @GetMapping("/postInfo.do")
+    @GetMapping("/postInfo")
     public ModelAndView postInfo(HttpServletRequest request) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -35,21 +40,25 @@ public class PostController {
 
             /** Gson - 조회한 데이터 확인을 위해 사용
              * Gson dataGson = new Gson();
-             * String dataJson = dataGson.toJson(boardInfo);
-             * System.out.println(dataJson);
+             * String dataJson = dataGson.toJson(postInfo);
+             * logger.info(dataJson);
              */
+
+            Gson dataGson = new Gson();
+            String dataJson = dataGson.toJson(postInfo);
+            logger.info(dataJson);
 
             modelAndView.setViewName("post/post_info");
             modelAndView.addObject("writeId", postInfo.getWriteId());
-            modelAndView.addObject("boardTitle", postInfo.getPostTitle());
-            modelAndView.addObject("boardContent", postInfo.getPostContent());
+            modelAndView.addObject("postTitle", postInfo.getPostTitle());
+            modelAndView.addObject("postContent", postInfo.getPostContent());
             modelAndView.addObject("registryDate", postInfo.getRegistryDate());
         }
 
         return modelAndView;
     }
 
-    @GetMapping("/postList.do")
+    @GetMapping("/postList")
     public ModelAndView postList(HttpServletRequest request) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -71,19 +80,19 @@ public class PostController {
 
         /** Gson 조회한 데이터 확인을 위해 사용
          * Gson dataGson = new Gson();
-         * String dataJson = dataGson.toJson(boardService.boardList(boardModel, offset, limitRow));
-         * System.out.println(dataJson);
+         * String dataJson = dataGson.toJson(postService.postList(postModel, offset, limitRow));
+         * logger.info(dataJson);
          */
 
         modelAndView.setViewName("post/post_list");
-        modelAndView.addObject("boardList", postService.postList(postModel, offset, limitRow));
+        modelAndView.addObject("postList", postService.postList(postModel, offset, limitRow));
         modelAndView.addObject("totalRow", totalRow);
         modelAndView.addObject("pageNum", pageNum);
 
         return modelAndView;
     }
 
-    @RequestMapping(value = "/postWrite.do")
+    @RequestMapping(value = "/postWrite")
     public ModelAndView postWrite()  {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("post/post_write");
@@ -115,7 +124,7 @@ public class PostController {
         int resultNumber = postService.insertPost(postModel);
 
         if(resultNumber > 0) {
-            response.sendRedirect("./postList.do");
+            response.sendRedirect("./postList");
         } else {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=utf-8");
@@ -125,7 +134,7 @@ public class PostController {
         }
     }
 
-    @GetMapping(value = "/postModify.do")
+    @GetMapping(value = "/postModify")
     public ModelAndView postModify(HttpServletRequest request) throws Exception {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -138,8 +147,8 @@ public class PostController {
 
             /** Gson - 조회한 데이터 확인을 위해 사용
              * Gson dataGson = new Gson();
-             * String dataJson = dataGson.toJson(boardInfo);
-             * System.out.println(dataJson);
+             * String dataJson = dataGson.toJson(postInfo);
+             * logger.info(dataJson);
              */
 
             modelAndView.setViewName("post/post_modify");
@@ -160,7 +169,7 @@ public class PostController {
         PostModel postVO = new PostModel();
 
         if(request.getParameter("postUuid") != null && request.getParameter("postUuid").isBlank() == false) {
-            postVO.setPostUuid(request.getParameter("boardUuid"));
+            postVO.setPostUuid(request.getParameter("postUuid"));
         }
 
         if(request.getParameter("writeId") != null && request.getParameter("writeId").isBlank() == false) {
@@ -168,17 +177,22 @@ public class PostController {
         }
 
         if(request.getParameter("postTitle") != null && request.getParameter("postTitle").isBlank() == false) {
-            postVO.setPostTitle(request.getParameter("boardTitle"));
+            postVO.setPostTitle(request.getParameter("postTitle"));
         }
 
         if(request.getParameter("postContent") != null && request.getParameter("postContent").isBlank() == false) {
             postVO.setPostContent(request.getParameter("postContent"));
         }
 
+
+        Gson dataGson = new Gson();
+        String dataJson = dataGson.toJson(postVO);
+        System.out.println(dataJson);
+
         int resultNumber = postService.updatePost(postVO);
 
         if(resultNumber > 0) {
-            response.sendRedirect("./postInfo.do?uuid=" + postVO.getPostUuid());
+            response.sendRedirect("./postInfo?uuid=" + postVO.getPostUuid());
         } else {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=utf-8");
@@ -208,7 +222,7 @@ public class PostController {
                 PrintWriter out = response.getWriter();
                 out.println("<script type='text/javascript'>");
                 out.println("alert('해당 글이 삭제되었습니다.');");
-                out.println("window.location.href='/post/postList.do';");
+                out.println("window.location.href='/post/postList';");
                 out.println("</script>");
                 out.flush();
             } else {

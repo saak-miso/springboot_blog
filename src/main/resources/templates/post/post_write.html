@@ -17,11 +17,11 @@
         });
 
         document.getElementById("btnRegistry").addEventListener("click", function() {
-            submitBoardRegistry();
+            submitPostRegistry();
         });
     });
 
-    function submitBoardRegistry() {
+    function submitPostRegistry() {
 
         if(document.getElementsByName("postTitle")[0].value.replace(/\s/gi, "") === "") {
             alert("제목을 입력하지 않았습니다.\n제목을 입력해 주세요.");
@@ -35,14 +35,14 @@
             return false;
         }
 
-        document.getElementById("formBoardWrite").method = "POST";
-        document.getElementById("formBoardWrite").action = "./insertPost";
-        document.getElementById("formBoardWrite").submit();
+        document.getElementById("formPostWrite").method = "POST";
+        document.getElementById("formPostWrite").action = "./insertPost";
+        document.getElementById("formPostWrite").submit();
     }
 </script>
 <body>
 <h3>신규글 등록</h3>
-<form id="formBoardWrite">
+<form id="formPostWrite">
     <!-- 사용자 ID는 임시로 'user'를 고정으로 사용 -->
     <input type="hidden" name="writeId" value="user_id"/>
     <table>
