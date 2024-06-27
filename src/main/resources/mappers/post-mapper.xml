@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.boot.blog.dao.PostDAO">
+
+    <select id="selectPostInfo">
+        SELECT post_uuid, write_id, post_title, post_content, registry_date
+          FROM post_board
+         WHERE 1 = 1
+        <if test="postUuid != null and postUuid.isBlank() == false">
+            AND post_uuid = #{postUuid}
+        </if>
+        ORDER BY registry_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectPostCount" resultType="int">
+        SELECT COUNT(post_uuid) AS postCount FROM post_board WHERE 1 = 1
+    </select>
+
+    <select id="selectPostList" parameterType="int">
+        SELECT * FROM (
+            SELECT *, @ROWNUM := @ROWNUM + 1 AS row_num FROM (
+                SELECT post_uuid, write_id, post_title, post_content, registry_date
+                FROM post_board
+                WHERE 1 = 1
+                ORDER BY registry_date DESC
+            ) TMP, (SELECT @ROWNUM := 0) SUB
+            ORDER BY TMP.registry_date ASC
+        ) T
+        ORDER BY T.row_num DESC
+        LIMIT ${offset}, ${limitRow}
+    </select>
+
+    <insert id="insertBoard" useGeneratedKeys="true" keyProperty="board_uuid">
+        INSERT INTO post_board(board_uuid, write_id, board_title, board_content)
+        VALUE(#{postUuid}, #{writeId}, #{postTitle}, #{postContent})
+    </insert>
+
+    <update id="updateBoard">
+        UPDATE post_board SET
+              board_title = #{postTitle}
+            , board_content = #{postContent}
+        WHERE 1 = 1
+          AND board_uuid = #{postUuid}
+          AND write_id = #{writeId}
+    </update>
+
+    <delete id="deleteBoard">
+        DELETE FROM post_board
+         WHERE 1 = 1
+           AND board_uuid = #{postUuid}
+    </delete>
+
+</mapper>

@@ -12,26 +12,26 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("btnModify").addEventListener("click", function() {
-            submitBoardModify();
+            submitPostModify();
         });
     });
 
-    function submitBoardModify() {
+    function submitPostModify() {
 
         if(document.getElementsByName("postTitle")[0].value.replace(/\s/gi, "") == "") {
             alert("제목을 입력하지 않았습니다.\n제목을 입력해 주세요.");
-            document.getElementsByName("boardTitle")[0].focus();
+            document.getElementsByName("postTitle")[0].focus();
             return false;
         }
 
-        document.getElementById("formBoardRevise").method = "POST";
-        document.getElementById("formBoardRevise").action = "./updatePost";
-        document.getElementById("formBoardRevise").submit();
+        document.getElementById("formPostRevise").method = "POST";
+        document.getElementById("formPostRevise").action = "./updatePost";
+        document.getElementById("formPostRevise").submit();
     }
 </script>
 <body>
 <h3>글 수정</h3>
-<form id="formBoardRevise">
+<form id="formPostRevise">
     <input type="hidden" name="postUuid" th:value="${postUuid}"/>
     <table>
         <tbody>

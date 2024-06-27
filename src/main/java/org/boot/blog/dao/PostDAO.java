@@ -1,28 +1,26 @@
 package org.boot.blog.dao;
 
+import org.boot.blog.model.PostModel;
 
-// 패키지 - Entity로 변경
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
+import java.util.List;
 
-import java.util.Date;
+@Mapper
+@Repository("postDAO")
+public interface PostDAO {
 
-@Getter
-@Setter
-@Component("postDAO")
-public class PostDAO {
+    PostModel selectPostInfo(PostModel postModel) throws DataAccessException;
 
-    private int rowNum;
-    private String postUuid;
-    private String writeId;
-    private String postTitle;
-    private String postContent;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date registryDate;
-    public PostDAO() {
-        System.out.println("PostDAO 생성자 호출");
-    }
+    int selectPostCount(PostModel postModel) throws DataAccessException;
+
+    List<PostModel> selectPostList(PostModel postModel, int offset, int limitRow) throws DataAccessException;
+
+    int insertPost(PostModel postModel) throws Exception;
+
+    int updatePost(PostModel postModel) throws Exception;
+
+    int deletePost(PostModel postModel) throws Exception;
 }

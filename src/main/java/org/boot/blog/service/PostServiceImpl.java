@@ -1,7 +1,7 @@
 package org.boot.blog.service;
 
+import org.boot.blog.model.PostModel;
 import org.boot.blog.dao.PostDAO;
-import org.boot.blog.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -15,36 +15,36 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     @Autowired
-    @Qualifier("postRepository")
-    private PostRepository postRepository;
+    @Qualifier("postDAO")
+    private PostDAO postDAO;
 
     @Override
-    public PostDAO postInfo(PostDAO postDao) throws Exception {
-        return postRepository.selectPostInfo(postDao);
+    public PostModel postInfo(PostModel postModel) throws Exception {
+        return postDAO.selectPostInfo(postModel);
     }
 
     @Override
-    public int postCount(PostDAO postDao) throws Exception {
-        return postRepository.selectPostCount(postDao);
+    public int postCount(PostModel postModel) throws Exception {
+        return postDAO.selectPostCount(postModel);
     }
 
     @Override
-    public List<PostDAO> postList(PostDAO postDao, int offset, int limitRow) throws Exception {
-        return postRepository.selectPostList(postDao, offset, limitRow);
+    public List<PostModel> postList(PostModel postModel, int offset, int limitRow) throws Exception {
+        return postDAO.selectPostList(postModel, offset, limitRow);
     }
 
     @Override
-    public int insertPost(PostDAO postDao) throws Exception {
-        return postRepository.insertPost(postDao);
+    public int insertPost(PostModel postModel) throws Exception {
+        return postDAO.insertPost(postModel);
     }
 
     @Override
-    public int updatePost(PostDAO postDao) throws Exception {
-        return postRepository.updatePost(postDao);
+    public int updatePost(PostModel postModel) throws Exception {
+        return postDAO.updatePost(postModel);
     }
 
     @Override
-    public int deletePost(PostDAO postDao) throws Exception {
-        return postRepository.deletePost(postDao);
+    public int deletePost(PostModel postModel) throws Exception {
+        return postDAO.deletePost(postModel);
     }
 }
